@@ -5,7 +5,7 @@ import BottleModel from './BottleModel'
 export default function BottleViewer({ color, labelIndex = 1 }) {
   return (
     <Canvas
-      camera={{ position: [0, 1, 3.5], fov: 60 }}
+      camera={{ position: [0, 1, 2], fov: 60 }}
       dpr={[1, 1.5]}
       gl={{
         antialias: true,

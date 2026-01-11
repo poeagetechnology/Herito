@@ -84,7 +84,7 @@ export default function BottleModel({
       }
     })
 
-    root.getObjectByName('cap')?.traverse((c) => {
+    root.getObjectByName('Plastik_Cap')?.traverse((c) => {
       if (c.isMesh) {
         c.material = capMat
         c.renderOrder = 3
