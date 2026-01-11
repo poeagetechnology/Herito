@@ -2,101 +2,110 @@ import * as THREE from 'three'
 import { useMemo } from 'react'
 import { useGLTF, useTexture } from '@react-three/drei'
 
-export default function BottleModel({ liquidColor }) {
-  const gltf = useGLTF('/bottle.glb')
+export default function BottleModel({ liquidColor = '#eaff4f' }) {
+  const { scene } = useGLTF('/bottle.glb')
   const labelTexture = useTexture('/lemon.png')
 
   const model = useMemo(() => {
-    const scene = gltf.scene.clone(true)
+    const root = scene.clone(true)
 
-    // Center model
-    const box = new THREE.Box3().setFromObject(scene)
+    // ───────────────── CENTER MODEL ─────────────────
+    const box = new THREE.Box3().setFromObject(root)
     const center = box.getCenter(new THREE.Vector3())
-    scene.position.sub(center)
+    root.position.sub(center)
 
-    // Bottle glass
-    const bottle = scene.getObjectByName('bottle')
-    bottle?.traverse((child) => {
-      if (child.isMesh) {
-        child.renderOrder = 1
-        child.material = new THREE.MeshPhysicalMaterial({
-          color: 0xffffff,
-          transmission: 1,
-          roughness: 0.05,
-          metalness: 0,
-          ior: 1.5,
-          thickness: 0.4,
-          clearcoat: 1,
-          clearcoatRoughness: 0.05,
-          transparent: true,
-          depthWrite: false,
-          side: THREE.DoubleSide,
-        })
-      }
+    // ───────────────── MATERIALS ─────────────────
+    const glassMat = new THREE.MeshPhysicalMaterial({
+      color: 0xffffff,
+      transmission: 1,
+      roughness: 0.05,
+      metalness: 0,
+      ior: 1.5,
+      thickness: 0.4,
+      clearcoat: 1,
+      clearcoatRoughness: 0.05,
+      transparent: true,
+      depthWrite: false,
+      envMapIntensity: 1.5,
     })
 
-    const liquid = scene.getObjectByName('liquid')
-    liquid?.traverse((child) => {
-    if (child.isMesh) {
-        child.renderOrder = 2
-        child.material = new THREE.MeshStandardMaterial({
-        color: new THREE.Color(liquidColor),
-
-    
-        transparent: false,   // IMPORTANT
-        opacity: 1.0,         // fully opaque
-        roughness: 0.4,       // soft surface
-        metalness: 0.0,       // liquid is non-metal
-
-        depthWrite: true,
-        depthTest: true,
-        })
-    }
+    const liquidMat = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(liquidColor),
+      roughness: 0.35,
+      metalness: 0,
+      transparent: false,
+      depthWrite: true,
+      envMapIntensity: 1.2,
     })
 
-
-    const cap = scene.getObjectByName('cap')
-    cap?.traverse((child) => {
-    if (child.isMesh) {
-        child.renderOrder = 3
-        child.material = new THREE.MeshPhysicalMaterial({
-        color: 0x1c1c1c,   // dark plastic
-        roughness: 0.85,   // rough / matte
-        metalness: 0.0,    // plastic = non-metal
-        transmission: 0.0, // IMPORTANT: no glass effect
-        clearcoat: 0.0,    // no glossy coating
-        ior: 1.45,         // plastic IOR
-        })
-    }
+    const capMat = new THREE.MeshStandardMaterial({
+      color: 0x1c1c1c,
+      roughness: 0.85,
+      metalness: 0,
     })
 
-
-    // Label texture
+    // ───────── LABEL TEXTURE ─────────
     labelTexture.colorSpace = THREE.SRGBColorSpace
     labelTexture.wrapS = THREE.RepeatWrapping
     labelTexture.wrapT = THREE.ClampToEdgeWrapping
-    labelTexture.repeat.set(-1, 0.9)
-    labelTexture.offset.set(1, 0.05)
 
-    const label = scene.getObjectByName('Cylinder')
-    label?.traverse((child) => {
-      child.renderOrder = 2
+    // IMPORTANT: no rotation, no flipping
+    labelTexture.center.set(0, 0)
+    labelTexture.rotation = 0
+
+
+    labelTexture.repeat.set(1, -2)
+    labelTexture.offset.set(0, 1)
+
+    // ───────── LABEL MATERIAL ─────────
+    const labelMat = new THREE.MeshStandardMaterial({
+      map: labelTexture,
+      transparent: true,
+      roughness: 0.6,
+      metalness: 0,
+      depthWrite: false,
+    })
+
+
+    // ───────────────── APPLY MATERIALS ─────────────────
+
+    root.getObjectByName('bottle')?.traverse((child) => {
       if (child.isMesh) {
-        child.material = new THREE.MeshStandardMaterial({
-          map: labelTexture,
-          transparent: true,
-          roughness: 0.7,
-          metalness: 0,
-          side: THREE.DoubleSide,
-          depthWrite: false,
-        })
-        child.scale.set(1.002, 1, 1.002)
-        child.rotation.y = Math.PI
+        child.material = glassMat
+        child.renderOrder = 2
       }
     })
 
-    return scene
-  }, [gltf, labelTexture, liquidColor])
+    root.getObjectByName('liquid')?.traverse((child) => {
+      if (child.isMesh) {
+        child.material = liquidMat
+        child.renderOrder = 1
+      }
+    })
+
+    root.getObjectByName('cap')?.traverse((child) => {
+      if (child.isMesh) {
+        child.material = capMat
+        child.renderOrder = 3
+      }
+    })
+
+    // ───────── APPLY TO LABEL MESH ─────────
+    root.getObjectByName('Cylinder')?.traverse((child) => {
+      if (child.isMesh) {
+        child.material = labelMat
+        child.renderOrder = 4
+
+        // Small scale to avoid z-fighting with bottle
+        child.scale.set(1.002, 1, 1.002)
+
+        // DO NOT rotate the mesh
+        child.rotation.set(0, 0, 0)
+      }
+    })
+    
+    return root
+  }, [scene, labelTexture, liquidColor])
 
   return <primitive object={model} />
 }

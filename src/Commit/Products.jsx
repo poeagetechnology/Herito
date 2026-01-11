@@ -2,24 +2,14 @@ import React from 'react'
 import BottleViewer from './BottleViewer'
 
 const products = [
-  {
-    id: 1,
-    name: 'Mojito',
-    price: '₹20',
-    color: '#c4af10',
-  },
+
   {
     id: 2,
     name: 'Grape',
     price: '₹20',
     color: '#6a1b9a',
   },
-  {
-    id: 3,
-    name: 'Green',
-    price: '₹20',
-    color: '#00bfa5',
-  },
+ 
 ]
 
 export default function Products() {
