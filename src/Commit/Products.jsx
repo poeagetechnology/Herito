@@ -2,14 +2,13 @@ import React from 'react'
 import BottleViewer from './BottleViewer'
 
 const products = [
-
   {
     id: 2,
     name: 'Grape',
     price: '₹20',
     color: '#6a1b9a',
+    labelIndex: 1, // ← grape label
   },
- 
 ]
 
 export default function Products() {
@@ -25,7 +24,10 @@ export default function Products() {
             >
               {/* 3D MODEL */}
               <div className="h-[420px] bg-[#f3f4f6]">
-                <BottleViewer color={product.color} />
+                <BottleViewer
+                  color={product.color}
+                  labelIndex={product.labelIndex}
+                />
               </div>
 
               <div className="p-8">
