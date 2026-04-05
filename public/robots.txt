@@ -1,0 +1,23 @@
+# Robots.txt for Herito Wellness
+# Herito Wellness SEO Robots Configuration
+
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /*.json$
+Disallow: /private/
+Allow: /public/
+
+# Specific crawlers
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://www.heritowellness.com/sitemap.xml
+Sitemap: https://www.heritowellness.com/sitemap-products.xml
+Sitemap: https://www.heritowellness.com/sitemap-blog.xml

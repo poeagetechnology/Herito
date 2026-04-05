@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <!-- Product Category: Hydration -->
+  <url>
+    <loc>https://www.heritowellness.com/products?category=hydration</loc>
+    <lastmod>2026-01-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.heritowellness.com/images/hydration-drinks.jpg</image:loc>
+      <image:title>Hydration Drinks - Herito Wellness</image:title>
+    </image:image>
+  </url>
+
+  <!-- Product Category: Energy -->
+  <url>
+    <loc>https://www.heritowellness.com/products?category=energy</loc>
+    <lastmod>2026-01-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.heritowellness.com/images/energy-drinks.jpg</image:loc>
+      <image:title>Energy Drinks - Herito Wellness</image:title>
+    </image:image>
+  </url>
+
+  <!-- Product Category: Nutrition -->
+  <url>
+    <loc>https://www.heritowellness.com/products?category=nutrition</loc>
+    <lastmod>2026-01-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.heritowellness.com/images/nutrition-products.jpg</image:loc>
+      <image:title>Nutrition Products - Herito Wellness</image:title>
+    </image:image>
+  </url>
+
+  <!-- Product Category: Immunity -->
+  <url>
+    <loc>https://www.heritowellness.com/products?category=immunity</loc>
+    <lastmod>2026-01-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.heritowellness.com/images/immunity-drinks.jpg</image:loc>
+      <image:title>Immunity Drinks - Herito Wellness</image:title>
+    </image:image>
+  </url>
+
+</urlset>
